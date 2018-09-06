@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+   
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    
+    <div id="root">
+    
+    </div>
+
+    <div class="widget-mount widget-1">
+
+    </div>
+
+    <div class="widget-mount widget-2">
+
+    </div>
+
+    <div class="widget-mount widget-3">
+
+    </div>
+
+    <ul>
+            <li>React unminified: ~450kb</li>
+            <li>React minified: ~120kb</li>
+            <li>Preact unminified: ~87kb</li>
+            <li>Preact minified: ~23kb</li>
+    </ul>
+
+    <script src="./dist/main.js"></script>
+    <script>
+        Widget.mount(document.querySelector('.widget-2'));
+    </script>
+    <script type="text/babel">
+    class CounterComponent extends React.Component {
+
+        constructor(props) {
+            super(props);
+            this.state = {counter: 0};
+        }
+
+        componentDidMount() {
+            setInterval(() => {this.setState({counter: this.state.counter+Math.ceil(10*Math.random())})},1000);
+        }
+        render() {
+            return this.state.counter;
+
+        }
+    }
+
+    class Index extends React.Component {
+        componentDidMount() {
+           
+        }
+        render() {
+            return (<div>
+                <hr/>
+                    <h1>Root page</h1>
+                    <p>So what is this?</p>
+                    <code>This is a React app that is using a <strong>Widget</strong> global reference<br/>
+                    and it's method <strong>mount</strong> to mount a widget<br/>
+                    that is itself using a react inside.<br/><br/>
+                    This demo shows that two independent React instances can run one by another<br/>
+                    without collisions, even if there's a React app running inside another React app<br/><br/>
+                        </code>
+                       Root counter <CounterComponent/><br/><br/>
+                       <button onClick={() =>  Widget.mount(this.mountTarget)}>Mount!</button>   <button onClick={() =>  Widget.unmount(this.mountTarget)}>Unmount!</button><br/><br/><br/><br/>
+                        <div className="react-child-that-will-have-widget-mounted" ref={el => this.mountTarget = el}><em>loading widget...</em></div>
+                     
+                        <h2>End of root page</h2>
+                        <hr/>
+                        </div>);
+        }
+    }
+
+        ReactDOM.render(
+            <Index/>,
+            document.getElementById('root')
+        );
+
+
+    </script>
+</body>
+</html>
